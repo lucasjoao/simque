@@ -1,0 +1,21 @@
+<!doctype html>
+<title>SimQue</title>
+<div>
+  <h1>SimQue</h1>
+  <hr>
+  <h2>Configuração da simulação</h2>
+  <form action="{{ url_for('config') }}" method=post>
+    <dl>
+      <dt>TEC (tempo entre chegadas)</dt>
+        <dd><input type=text name=tmp></dd>
+      <dt>Fila possui limite?</dt>
+        <dd>
+          <select name="limit_queue">
+            <option value=1>"Sim"</option>
+            <option value=0>"Não"</option>
+          </select>
+        </dd>
+        <dd><input type=submit value=Simular></dd>
+    </dl>
+  </form>
+</div>
