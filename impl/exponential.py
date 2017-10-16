@@ -1,5 +1,5 @@
 from numpy import random
-from impl.distribution import distribution
+from distribution import distribution
 
 
 class exponential(distribution):

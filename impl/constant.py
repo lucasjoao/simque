@@ -1,4 +1,4 @@
-from impl.distribution import distribution
+from distribution import distribution
 
 
 class constant(distribution):
