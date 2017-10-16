@@ -1,7 +1,9 @@
+from impl.simulator import simulator
 from flask import Flask, render_template, request, session, url_for, redirect
 
 app = Flask(__name__)
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+# not so good...
+app.secret_key = 'V\xf5\xa1\xa3\xb0\xaf\x179\x82+J6'
 
 
 @app.route("/")
@@ -17,10 +19,6 @@ def doc():
 @app.route("/config", methods=['GET', 'POST'])
 def config():
     if request.method == 'POST':
-        # TODO: objeto simulador
-        # TODO: secret key
-        # TODO: realizar um teste de como fazer para pause
-        # TODO: algoritmo em si
         session['simulator'] = request.form
         return redirect(url_for('simulate'))
     return render_template('config.html')
@@ -28,5 +26,10 @@ def config():
 
 @app.route("/simulate")
 def simulate():
-    print(session['simulator'])
+    sim = simulator(session['simulator'])
+    sim.start()
+    while not sim.lef:
+        sim.next_time()
+        sim.event()
+    sim.finish()
     return render_template('simulate.html')
