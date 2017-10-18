@@ -1,9 +1,10 @@
 from impl.simulator import simulator
-from flask import Flask, render_template, request, session, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect
 
 app = Flask(__name__)
-# not so good...
-app.secret_key = 'V\xf5\xa1\xa3\xb0\xaf\x179\x82+J6'
+
+# not so good again...
+sim = simulator()
 
 
 @app.route("/")
@@ -19,14 +20,16 @@ def doc():
 @app.route("/config", methods=['GET', 'POST'])
 def config():
     if request.method == 'POST':
-        session['simulator'] = request.form
+        sim.create(request.form)
         return redirect(url_for('simulate'))
     return render_template('config.html')
 
 
 @app.route("/simulate")
 def simulate():
-    sim = simulator(session['simulator'])
+    # usar ideias de steps para view de execução com possibilidade de
+    # finalizar.
+    # 2 radio button com 1 submit, valor define como agir
     sim.start()
     while not sim.lef:
         sim.next_time()

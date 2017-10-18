@@ -1,12 +1,12 @@
 from numpy import random
-from distribution import distribution
+from impl.distribution import distribution
 
 
 class uniform(distribution):
 
     def __init__(self, mini, maxi):
-        self.mini = mini
-        self.maxi = maxi
+        self.mini = float(mini)
+        self.maxi = float(maxi)
 
     def generate(self):
-        return random.uniform(self.mini, self.maxi)
+        return int(random.uniform(self.mini, self.maxi))

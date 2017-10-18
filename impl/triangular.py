@@ -1,5 +1,5 @@
 from numpy import random
-from distribution import distribution
+from impl.distribution import distribution
 
 
 class triangular(distribution):
@@ -10,4 +10,4 @@ class triangular(distribution):
         self.maxi = maxi
 
     def generate(self):
-        return random.triangular(self.mini, self.mode, self.maxi)
+        return int(random.triangular(self.mini, self.mode, self.maxi))

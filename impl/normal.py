@@ -1,12 +1,12 @@
 from numpy import random
-from distribution import distribution
+from impl.distribution import distribution
 
 
 class normal(distribution):
 
     def __init__(self, average, dp):
-        self.average = average
-        self.dp = dp
+        self.average = float(average)
+        self.dp = float(dp)
 
     def generate(self):
-        return random.normal(self.average, self.dp)
+        return int(random.normal(self.average, self.dp))

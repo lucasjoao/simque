@@ -1,4 +1,4 @@
-from distribution import distribution
+from impl.distribution import distribution
 
 
 class constant(distribution):
@@ -7,4 +7,4 @@ class constant(distribution):
         self.amount = amount
 
     def generate(self):
-        return self.amount
+        return int(self.amount)

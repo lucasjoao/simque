@@ -1,12 +1,15 @@
-from constant import constant
-from exponential import exponential
-from triangular import triangular
-from normal import normal
-from unifor import uniform
+import bisect
+from impl.constant import constant
+from impl.exponential import exponential
+from impl.triangular import triangular
+from impl.normal import normal
+from impl.uniform import uniform
+from impl.event import event
+
 
 class simulator(object):
 
-    def __init__(self, form):
+    def create(self, form):
         self.limit_queue = form['limit_queue']
 
         if form['tec1_aleatory'] == '0':
@@ -78,6 +81,10 @@ class simulator(object):
     def start(self):
         self.clock = 0
         self.lef = []
+        event_ent_1 = event(1, 0, self.tec1_distribution.generate())
+        event_ent_2 = event(2, 0, self.tec2_distribution.generate())
+        bisect.insort(self.lef, event_ent_1)
+        bisect.insort(self.lef, event_ent_2)
         # variaveis de estado, contadores, estatisticas
 
     def next_time(self):
