@@ -88,10 +88,18 @@ class simulator(object):
         # variaveis de estado, contadores, estatisticas
 
     def next_time(self):
-        pass
+        current_event = self.lef.pop(0)
+        self.clock = current_event.time
+        return current_event
+        # determinar o tipo do próximo evento?
 
-    def event(self):
-        pass
+    def event(self, current_event):
+        current_event.execute()
+        # implementar em event.py
+        # atualizar coisas do relatório
+        # adicionar eventos futuros
 
     def finish(self):
         pass
+        # gerar relatório
+        # estatísticas finais
