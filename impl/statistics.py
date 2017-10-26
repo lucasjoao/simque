@@ -37,6 +37,8 @@ class statistics(object):
         self.total_time_exec_ents = 0
         self.avrg_srv_ocupation = 0.0
 
+        self.count_blocks_ent = 0
+
     def last_values(self, clock):
         self.fail_time_percentual_srv_1 = (self.fail_time_srv_1 * 100) / clock
         self.fail_time_percentual_srv_2 = (self.fail_time_srv_2 * 100) / clock

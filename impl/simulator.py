@@ -217,6 +217,8 @@ class simulator(object):
                         1, 1, self.server_1.work() + self.clock, False)
                     left_event.exec_time = self.clock
                     bisect.insort(self.lef, left_event)
+                elif self.server_1.limited and len(self.server_1.ef) == 10:
+                    self.statistics.count_blocks_ent += 1
                 else:
                     self.server_1.ef += 1
                     self.server_1.ef_times.append(self.clock)
@@ -273,6 +275,8 @@ class simulator(object):
                         2, 1, self.server_2.work() + self.clock, False)
                     left_event.exec_time = self.clock
                     bisect.insort(self.lef, left_event)
+                elif self.server_2.limited and len(self.server_2.ef) == 10:
+                    self.statistics.count_blocks_ent += 1
                 else:
                     self.server_2.ef += 1
                     self.server_2.ef_times.append(self.clock)

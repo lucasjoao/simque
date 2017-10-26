@@ -7,7 +7,7 @@ class server(object):
         self.free = True
         self.with_error = False
         self.ef = 0
-        self.limited = limited
+        self.limited = int(limited)
         self.ef_times = []
 
     def work(self):
