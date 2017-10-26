@@ -177,19 +177,26 @@ class simulator(object):
             if typo:
                 # exit event
                 if self.server_1.ef > 0:
+                    key = self.server_1.ef
+                    value = self.clock - self.server_1.ef_times.pop(0)
+                    old_value = self.statistics.dict_queue_times.get(key, 0)
+                    self.statistics.dict_queue_times.update(
+                        {key: value + old_value})
+
                     self.server_1.ef -= 1
                     left_event = event(
                         1, 1, self.server_1.work() + self.clock, False)
                     bisect.insort(self.lef, left_event)
                     self.server_1.free = False
 
-                    self.statistics.total_queue_time += \
-                        self.clock - self.server_1.ef_times.pop(0)
+                    self.statistics.total_queue_time += value
                 else:
                     self.server_1.free = True
 
-                self.statistics.total_time_ent_1 += \
+                self.statistics.total_time_exec_ents += \
                     self.clock - current_event.exec_time
+                self.statistics.total_time_ent_1 += \
+                    self.clock - current_event.init_time
                 self.statistics.count_end_ent_1 += 1
             else:
                 # entry event
@@ -217,6 +224,7 @@ class simulator(object):
 
                 next_time = self.tec1_distribution.generate() + self.clock
                 new_event = event(1, 0, next_time, False)
+                new_event.init_time = self.clock
                 bisect.insort(self.lef, new_event)
 
                 self.statistics.count_start_ent_1 += 1
@@ -225,19 +233,26 @@ class simulator(object):
             if typo:
                 # exit event
                 if self.server_2.ef > 0:
+                    key = self.server_2.ef
+                    value = self.clock - self.server_2.ef_times.pop(0)
+                    old_value = self.statistics.dict_queue_times.get(key, 0)
+                    self.statistics.dict_queue_times.update(
+                        {key: value + old_value})
+
                     self.server_2.ef -= 1
                     left_event = event(
                         2, 1, self.server_2.work() + self.clock, False)
                     bisect.insort(self.lef, left_event)
                     self.server_2.free = False
 
-                    self.statistics.total_queue_time += \
-                        self.clock - self.server_2.ef_times.pop(0)
+                    self.statistics.total_queue_time += value
                 else:
                     self.server_2.free = True
 
-                self.statistics.total_time_ent_2 += \
+                self.statistics.total_time_exec_ents += \
                     self.clock - current_event.exec_time
+                self.statistics.total_time_ent_2 += \
+                    self.clock - current_event.init_time
                 self.statistics.count_end_ent_2 += 1
             else:
                 # entry event
@@ -265,12 +280,11 @@ class simulator(object):
 
                 next_time = self.tec2_distribution.generate() + self.clock
                 new_event = event(2, 0, next_time, False)
+                new_event.init_time = self.clock
                 bisect.insort(self.lef, new_event)
 
                 self.statistics.count_start_ent_2 += 1
 
     def finish(self):
         self.statistics.last_values(self.clock)
-
         # TODO: gerar relatório
-        # TODO: estatísticas finais

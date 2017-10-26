@@ -8,6 +8,7 @@ class event(object):
         self.time = time
         self.about_fail = about_fail
         self.exec_time = 0
+        self.init_time = 0
 
     def __lt__(self, other):
         return self.time < other.time
