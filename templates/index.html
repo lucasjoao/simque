@@ -1,10 +1,13 @@
 <!doctype html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app.css') }}">
 <title>SimQue</title>
 <div>
   <h1>SimQue</h1>
   <hr>
-  <p>SimQue de "Simple Queues". Um simples simulador de duas filas desenvolvido por <a href="http://www.github.com/lucasjoao">Lucas João</a> para a disciplina de Modelagem e Simulação (INE 5425) da UFSC.</p>
-  <a href="{{ url_for('doc') }}">Documentação</a>
-  <a href="{{ url_for('config') }}">Iniciar simulação</a>
-  <a href="http://www.github.com/lucasjoao/simque">Código fonte</a>
+  <p>
+    SimQue de "Simple Queues". Um simples simulador de duas filas desenvolvido por <a href="http://www.github.com/lucasjoao">Lucas João</a> para a disciplina de Modelagem e Simulação (INE 5425) da UFSC.
+  </p>
+  <p><a href="{{ url_for('doc') }}">Documentação</a></p>
+  <p><a href="{{ url_for('config') }}">Iniciar simulação</a></p>
+  <p><a href="http://www.github.com/lucasjoao/simque">Código fonte</a></p>
 </div>

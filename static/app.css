@@ -1,0 +1,18 @@
+h1, h2, p, dl {
+  text-align: center;
+  font-family: sans-serif;
+}
+
+input {
+  margin: 0 auto;
+  margin-top: 5px;
+}
+
+dt {
+  margin: 5px;
+  font-weight: bold;
+}
+
+
+
+
