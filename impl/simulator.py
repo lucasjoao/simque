@@ -108,59 +108,72 @@ class simulator(object):
         bisect.insort(self.lef, event_ent_2)
         bisect.insort(self.lef, event_srv_1)
         bisect.insort(self.lef, event_srv_2)
-        # variaveis de estado, contadores, estatisticas
+        # TODO: variaveis de estado, contadores, estatisticas
 
     def next_time(self):
         current_event = self.lef.pop(0)
         self.clock += current_event.time
         return current_event
-        # determinar o tipo do próximo evento?
+        # TODO: determinar o tipo do próximo evento?
 
     def event(self, current_event):
         if current_event.about_fail:
             self.execute_fail_event(current_event)
         else:
             self.execute_event(current_event)
-
-        # atualizar coisas do relatório
-        # adicionar eventos futuros
+        # TODO: atualizar coisas do relatório
 
     def execute_fail_event(self, current_event):
         entity = current_event.entity
         typo = current_event.typo
+        final_time = self.tf_distribution.generate() + self.clock
 
-        # REVIEW THIS PART
         if entity:
+            # entity 1
             if typo:
                 # exit event
                 self.server_1.with_error = False
             else:
                 # entry event
                 self.server_1.with_error = True
-                left_event = event(
-                    1, 1, self.tf_distribution.generate() + self.clock, True)
+                left_event = event(1, 1, final_time, True)
                 bisect.insort(self.lef, left_event)
-                # add new entry fail event but with caution
-                    # x TF x TEF x TF x
+
+                new_event = event(
+                    1, 0, final_time + self.tef_distribution.generate(), True)
+                bisect.insort(self.lef, new_event)
         else:
-            # change to be like last if
-            self.server_2.with_error = False if typo else True
+            # entity 2
+            if typo:
+                # exit event
+                self.server_2.with_error = False
+            else:
+                # entry event
+                self.server_2.with_error = True
+                left_event = event(2, 1, final_time, True)
+                bisect.insort(self.lef, left_event)
+
+                new_event = event(
+                    2, 0, final_time + self.tef_distribution.generate(), True)
+                bisect.insort(self.lef, new_event)
 
     def execute_event(self, current_event):
         entity = current_event.entity
         typo = current_event.typo
 
         if entity:
+            # entity 1
             if typo:
                 # exit event
-                # ADD QUESTÃO DO LIVRE OU NÃO AQUI
                 if self.server_1.ef > 0:
                     self.server_1.ef -= 1
                     left_event = event(
                         1, 1, self.server_1.work() + self.clock, False)
                     bisect.insort(self.lef, left_event)
-
-                # statistics
+                    self.server_1.free = False
+                else:
+                    self.server_1.free = True
+                # TODO: statistics
             else:
                 # entry event
                 if self.server_1.with_error \
@@ -182,14 +195,44 @@ class simulator(object):
                 next_time = self.tec1_distribution.generate() + self.clock
                 new_event = event(1, 0, next_time, False)
                 bisect.insort(self.lef, new_event)
-                # statistics
+                # TODO: statistics
         else:
+            # entity 2
             if typo:
-                pass
+                # exit event
+                if self.server_2.ef > 0:
+                    self.server_2.ef -= 1
+                    left_event = event(
+                        2, 1, self.server_2.work() + self.clock, False)
+                    bisect.insort(self.lef, left_event)
+                    self.server_2.free = False
+                else:
+                    self.server_2.free = True
+                # TODO: statistics
             else:
-                pass
+                # entry event
+                if self.server_2.with_error \
+                        and not self.server_1.with_error \
+                        and self.server_1.free:
+
+                    self.server_1.free = False
+                    left_event = event(
+                        1, 1, self.server_1.work() + self.clock, False)
+                    bisect.insort(self.lef, left_event)
+                elif self.server_2.free:
+                    self.server_2.free = False
+                    left_event = event(
+                        2, 1, self.server_2.work() + self.clock, False)
+                    bisect.insort(self.lef, left_event)
+                else:
+                    self.server_2.ef += 1
+
+                next_time = self.tec2_distribution.generate() + self.clock
+                new_event = event(2, 0, next_time, False)
+                bisect.insort(self.lef, new_event)
+                # TODO: statistics
 
     def finish(self):
         pass
-        # gerar relatório
-        # estatísticas finais
+        # TODO: gerar relatório
+        # TODO: estatísticas finais
