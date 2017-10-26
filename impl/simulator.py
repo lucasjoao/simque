@@ -6,9 +6,13 @@ from impl.normal import normal
 from impl.uniform import uniform
 from impl.event import event
 from impl.server import server
+from impl.statistics import statistics
 
 
 class simulator(object):
+
+    def __init__(self):
+        self.statistics = statistics()
 
     def create(self, form):
         self.limit_queue = form['limit_queue']
@@ -126,7 +130,8 @@ class simulator(object):
     def execute_fail_event(self, current_event):
         entity = current_event.entity
         typo = current_event.typo
-        final_time = self.tf_distribution.generate() + self.clock
+        tf_time = self.tf_distribution.generate()
+        final_time = tf_time + self.clock
 
         if entity:
             # entity 1
@@ -142,6 +147,9 @@ class simulator(object):
                 new_event = event(
                     1, 0, final_time + self.tef_distribution.generate(), True)
                 bisect.insort(self.lef, new_event)
+
+                self.statistics.fail_time_srv_1 += tf_time
+                self.statistics.fails_srv_1 += 1
         else:
             # entity 2
             if typo:
@@ -157,6 +165,9 @@ class simulator(object):
                     2, 0, final_time + self.tef_distribution.generate(), True)
                 bisect.insort(self.lef, new_event)
 
+                self.statistics.fail_time_srv_2 += tf_time
+                self.statistics.fails_srv_2 += 1
+
     def execute_event(self, current_event):
         entity = current_event.entity
         typo = current_event.typo
@@ -171,9 +182,15 @@ class simulator(object):
                         1, 1, self.server_1.work() + self.clock, False)
                     bisect.insort(self.lef, left_event)
                     self.server_1.free = False
+
+                    self.statistics.total_queue_time += \
+                        self.clock - self.server_1.ef_times.pop(0)
                 else:
                     self.server_1.free = True
-                # TODO: statistics
+
+                self.statistics.total_time_ent_1 += \
+                    self.clock - current_event.exec_time
+                self.statistics.count_end_ent_1 += 1
             else:
                 # entry event
                 if self.server_1.with_error \
@@ -183,19 +200,26 @@ class simulator(object):
                     self.server_2.free = False
                     left_event = event(
                         2, 1, self.server_2.work() + self.clock, False)
+                    left_event.exec_time = self.clock
                     bisect.insort(self.lef, left_event)
+
+                    self.statistics.change_ent_1 += 1
                 elif self.server_1.free:
                     self.server_1.free = False
                     left_event = event(
                         1, 1, self.server_1.work() + self.clock, False)
+                    left_event.exec_time = self.clock
                     bisect.insort(self.lef, left_event)
                 else:
                     self.server_1.ef += 1
+                    self.server_1.ef_times.append(self.clock)
+                    self.statistics.total_queue += 1
 
                 next_time = self.tec1_distribution.generate() + self.clock
                 new_event = event(1, 0, next_time, False)
                 bisect.insort(self.lef, new_event)
-                # TODO: statistics
+
+                self.statistics.count_start_ent_1 += 1
         else:
             # entity 2
             if typo:
@@ -206,9 +230,15 @@ class simulator(object):
                         2, 1, self.server_2.work() + self.clock, False)
                     bisect.insort(self.lef, left_event)
                     self.server_2.free = False
+
+                    self.statistics.total_queue_time += \
+                        self.clock - self.server_2.ef_times.pop(0)
                 else:
                     self.server_2.free = True
-                # TODO: statistics
+
+                self.statistics.total_time_ent_2 += \
+                    self.clock - current_event.exec_time
+                self.statistics.count_end_ent_2 += 1
             else:
                 # entry event
                 if self.server_2.with_error \
@@ -218,21 +248,29 @@ class simulator(object):
                     self.server_1.free = False
                     left_event = event(
                         1, 1, self.server_1.work() + self.clock, False)
+                    left_event.exec_time = self.clock
                     bisect.insort(self.lef, left_event)
+
+                    self.statistics.change_ent_2 += 1
                 elif self.server_2.free:
                     self.server_2.free = False
                     left_event = event(
                         2, 1, self.server_2.work() + self.clock, False)
+                    left_event.exec_time = self.clock
                     bisect.insort(self.lef, left_event)
                 else:
                     self.server_2.ef += 1
+                    self.server_2.ef_times.append(self.clock)
+                    self.statistics.total_queue += 1
 
                 next_time = self.tec2_distribution.generate() + self.clock
                 new_event = event(2, 0, next_time, False)
                 bisect.insort(self.lef, new_event)
-                # TODO: statistics
+
+                self.statistics.count_start_ent_2 += 1
 
     def finish(self):
-        pass
+        self.statistics.last_values(self.clock)
+
         # TODO: gerar relatório
         # TODO: estatísticas finais
