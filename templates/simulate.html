@@ -3,4 +3,69 @@
 <div>
   <h1>SimQue</h1>
   <hr>
+  {% if statistics %}
+    <dl>
+      <dt>Taxa média da ocupação dos servidores:</dt>
+      <dd>{{ statistics.avrg_srv_ocupation }}</dd>
+
+      <dt>Número médio de entidades nas filas:</dt>
+      <dd>{{ statistics.avrg_queue_ents }}</dd>
+
+      <dt>Total de entidades nas filas:</dt>
+      <dd>{{ statistics.total_queue }}</dd>
+
+      <dt>Tempo total das entidades nas filas:</dt>
+      <dd>{{ statistics.total_queue_time }}</dd>
+
+      <dt>Tempo médio de uma entidade na fila:</dt>
+      <dd>{{ statistics.avrg_queue_time }}</dd>
+
+      <dt>Tempo médio no sistema da entidade 1:</dt>
+      <dd>{{ statistics.avrg_time_ent_1 }}</dd>
+
+      <dt>Tempo médio no sistema da entidade 2:</dt>
+      <dd>{{ statistics.avrg_time_ent_2 }}</dd>
+
+      <dt>Tempo total no sistema de entidades do tipo 1:</dt>
+      <dd>{{ statistics.total_time_ent_1 }}</dd>
+
+      <dt>Tempo total no sistema de entidades do tipo 2:</dt>
+      <dd>{{ statistics.total_time_ent_2 }}</dd>
+
+      <dt>Contador da entidade 1:</dt>
+      <dd>{{ statistics.count_end_ent_1 }}</dd>
+
+      <dt>Contador da entidade 2:</dt>
+      <dd>{{ statistics.count_end_ent_2 }}</dd>
+
+      <dt>Quantidade de falhas do servidor 1:</dt>
+      <dd>{{ statistics.fails_srv_1 }}</dd>
+
+      <dt>Quantidade de falhas do servidor 2:</dt>
+      <dd>{{ statistics.fails_srv_2 }}</dd>
+
+      <dt>Total do tempo de falha do servidor 1:</dt>
+      <dd>{{ statistics.fail_time_srv_1 }}</dd>
+
+      <dt>Total do tempo de falha do servidor 2:</dt>
+      <dd>{{ statistics.fail_time_srv_2 }}</dd>
+
+      <dt>Percentual do tempo em falha ao tempo total do servidor 1:</dt>
+      <dd> {{ statistics.fail_time_percentual_srv_1}}</dd>
+
+      <dt>Percentual do tempo em falha ao tempo total do servidor 2:</dt>
+      <dd> {{ statistics.fail_time_percentual_srv_2}}</dd>
+
+      <dt>Número de trocas da entidade 1:</dt>
+      <dd>{{ statistics.change_ent_1 }}</dd>
+
+      <dt>Número de trocas da entidade 2:</dt>
+      <dd>{{ statistics.change_ent_2 }}</dd>
+
+      <dt>Número de entidades bloqueadas:</dt>
+      <dd>{{ statistics.count_blocks_ent }}</dd>
+    </dl>
+  {% else %}
+    <p>Ops, ocorreu um erro!</p>
+  {% endif %}
 </div>

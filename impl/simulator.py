@@ -13,9 +13,11 @@ class simulator(object):
 
     def __init__(self):
         self.statistics = statistics()
+        self.limit = 0
 
     def create(self, form):
-        self.limit_queue = form['limit_queue']
+        self.limit_queue = int(form['limit_queue'])
+        self.limit = int(form['nro_eventos'])
 
         if form['tec1_aleatory'] == '0':
             self.tec1_distribution = constant(form['tec_c1'])
@@ -112,20 +114,17 @@ class simulator(object):
         bisect.insort(self.lef, event_ent_2)
         bisect.insort(self.lef, event_srv_1)
         bisect.insort(self.lef, event_srv_2)
-        # TODO: variaveis de estado, contadores, estatisticas
 
     def next_time(self):
         current_event = self.lef.pop(0)
         self.clock += current_event.time
         return current_event
-        # TODO: determinar o tipo do próximo evento?
 
     def event(self, current_event):
         if current_event.about_fail:
             self.execute_fail_event(current_event)
         else:
             self.execute_event(current_event)
-        # TODO: atualizar coisas do relatório
 
     def execute_fail_event(self, current_event):
         entity = current_event.entity
@@ -133,9 +132,8 @@ class simulator(object):
         tf_time = self.tf_distribution.generate()
         final_time = tf_time + self.clock
 
-        if entity:
-            # entity 1
-            if typo:
+        if entity == 1:
+            if typo == 1:
                 # exit event
                 self.server_1.with_error = False
             else:
@@ -152,7 +150,7 @@ class simulator(object):
                 self.statistics.fails_srv_1 += 1
         else:
             # entity 2
-            if typo:
+            if typo == 1:
                 # exit event
                 self.server_2.with_error = False
             else:
@@ -172,9 +170,8 @@ class simulator(object):
         entity = current_event.entity
         typo = current_event.typo
 
-        if entity:
-            # entity 1
-            if typo:
+        if entity == 1:
+            if typo == 1:
                 # exit event
                 if self.server_1.ef > 0:
                     key = self.server_1.ef
@@ -217,7 +214,7 @@ class simulator(object):
                         1, 1, self.server_1.work() + self.clock, False)
                     left_event.exec_time = self.clock
                     bisect.insort(self.lef, left_event)
-                elif self.server_1.limited and len(self.server_1.ef) == 10:
+                elif self.server_1.limited == 1 and self.server_1.ef == 10:
                     self.statistics.count_blocks_ent += 1
                 else:
                     self.server_1.ef += 1
@@ -228,11 +225,9 @@ class simulator(object):
                 new_event = event(1, 0, next_time, False)
                 new_event.init_time = self.clock
                 bisect.insort(self.lef, new_event)
-
-                self.statistics.count_start_ent_1 += 1
         else:
             # entity 2
-            if typo:
+            if typo == 1:
                 # exit event
                 if self.server_2.ef > 0:
                     key = self.server_2.ef
@@ -275,7 +270,7 @@ class simulator(object):
                         2, 1, self.server_2.work() + self.clock, False)
                     left_event.exec_time = self.clock
                     bisect.insort(self.lef, left_event)
-                elif self.server_2.limited and len(self.server_2.ef) == 10:
+                elif self.server_2.limited == 1 and self.server_2.ef == 10:
                     self.statistics.count_blocks_ent += 1
                 else:
                     self.server_2.ef += 1
@@ -287,8 +282,5 @@ class simulator(object):
                 new_event.init_time = self.clock
                 bisect.insort(self.lef, new_event)
 
-                self.statistics.count_start_ent_2 += 1
-
     def finish(self):
         self.statistics.last_values(self.clock)
-        # TODO: gerar relatório
