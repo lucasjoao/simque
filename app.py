@@ -14,7 +14,7 @@ def index():
 
 @app.route('/doc')
 def doc():
-    return 'Documentação em breve!'
+    return render_template('doc.html')
 
 
 @app.route('/config', methods=['GET', 'POST'])
