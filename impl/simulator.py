@@ -15,6 +15,11 @@ class simulator(object):
         self.statistics = statistics()
         self.limit = 0
 
+    def restart(self):
+        self.statistics = statistics()
+        self.limit = 0
+        self.clock = 0
+
     def create(self, form):
         self.limit_queue = int(form['limit_queue'])
         self.limit = int(form['nro_eventos'])

@@ -24,10 +24,25 @@
   </p>
   <h2>Utilização do sistema</h2>
   <p>
-    <!-- falar tela por tela -->
+    A página inicial (i.e. o index) serve para apresentar o sistema brevemente e possui cinco links: para a página de documentação, para a página que inicia a simulação, para o código fonte, para a lista de TODO atual e para o perfil do autor do simulador no GitHub.
+  </p>
+  <p>
+    A página de documentação (i.e. a doc) serve como relatório do projeto, já que apresenta as tecnologias e ferramentas utilizadas, além de alguns detalhes sobre a implementação, mas também serve como manual para o usuário, pois explica a utilização desse simples sistema página por página. Para retornar a tela inicial, basta voltar através do navegador.
+  </p>
+  <p>
+    A página de configuração (i.e. config) serve para que o usuário informe os parâmetros que serão utilizados na simulação. Todos os campos devem ser preenhcidos para um correto funcionamento da simulação. Em todas as alternativas que envolvem tempo, dependendo da opção selecionada, então diferentes campos ficarão visíveis na tela para que sejam preenchidos. Para enviar os dados e realizar a simulação basta clicar em "Simular". Para retornar a tela inicial deve-se voltar através do navegador.
+  </p>
+  <p>
+    A página de simulação (i.e. simulate) apresenta todas as estatísticas calculadas durante a simulação. Para realizar uma nova simulação é preciso ir até o index, ou seja, https://simque.pythonanywhere.com/ para a partir desse local recomeçar o processo de configuração e simulação.
   </p>
   <h2>Alguns detalhes sobre a implementação</h2>
   <p>
-    <!-- comentar principais trechos, associar com slide -->
+    As funções estão dentro do diretório 'impl' e elas foram programadas com o auxílio da biblioteca NumPy.
+  </p>
+  <p>
+    Slides de aula auxiliaram no desenvolvimento dos algoritmos de entrada e saída de entidades no arquivo 'simulator.py'.
+  </p>
+  <p>
+    Algumas estatísticas são calculadas em 'simulator.py' para depois ser enviada para o 'statistics.py', enquanto outras só são calculadas nesse último arquivo.
   </p>
 </div>

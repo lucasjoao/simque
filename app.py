@@ -36,7 +36,9 @@ def simulate(statistics=None):
             break
         counter += 1
     sim.finish()
-    return render_template('simulate.html', statistics=sim.statistics)
+    stats = sim.statistics
+    sim.restart()
+    return render_template('simulate.html', statistics=stats)
 
 
 def debug():

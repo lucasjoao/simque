@@ -10,3 +10,4 @@ https://simque.pythonanywhere.com
 - [ ] definir se na organização utilizar a ideia de package ou de module
 - [ ] possibilitar parar/retornar a simulação com a apresentação das variáveis de interesses calculadas até então
 - [ ] add testes unitários, porque só realizado pequenos testes exploratórios :$
+- [ ] evitar divisões por zero nas estatísticas
